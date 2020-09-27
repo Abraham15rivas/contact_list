@@ -33,7 +33,9 @@
                 </div>
                 @include('contacts.index')
                 <div class="float-right">
-                    {{ $contacts->links() }}
+                    @if (!isset($search))
+                        {{ $contacts->links() }}
+                    @endif
                 </div>
             </div>
         </div>

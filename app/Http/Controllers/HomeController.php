@@ -22,12 +22,15 @@ class HomeController extends Controller
     public function search (Request $request) 
     {
         if ($request->has('search')) {
-        $contacts = Contact::where('name', 'LIKE', "%{$request->search}%")
+                               
+            $contacts = Contact::where('name', 'LIKE', "%{$request->search}%")
                                 ->orwhere('surname', 'LIKE', "%{$request->search}%")
                                 ->orwhere('email', 'LIKE', "%{$request->search}%")
                                 ->orwhere('contact_number', 'LIKE', "%{$request->search}%")
-                                ->paginate(10); 
-            return view('home', compact('contacts'));
+                                ->get();
+            $contacts = $contacts->where('user_id', auth()->user()->id);
+            $search = true;
+            return view('home', compact('contacts', 'search'));
         }
         return self::index();
     }
